@@ -1066,16 +1066,22 @@ const marketing = {
     "totalAllocated": "200000000000000000000000000",
     "totalReleaseMonths": "84"
 };
-const reserve = {
+const reserve =  {
     "lastClaimedMonth": "0",
     "lastClaimedTime": "0",
     "recipient": "0xdCCd079d9e6bd9157c6E1c45e681566e30ee8A0F",
-    "releaseInfos": [],
+    "releaseInfos": [{
+        "claimed": false,
+        "claimedTime": "0",
+        "month": "0",
+        "releaseAmount": "0",
+        "releaseTime": "1719532800"
+    }],
     "released": "0",
     "startRelease": "50000000000000000000000000",
     "startReleaseClaimed": false,
     "totalAllocated": "50000000000000000000000000",
-    "totalReleaseMonths": "0"
+    "totalReleaseMonths": "1"
 };
 
 const team = {
