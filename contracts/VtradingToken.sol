@@ -35,9 +35,9 @@ contract VtradingToken is ERC20, ERC20Burnable, Ownable, ERC20Permit {
     mapping(string => VestingSchedule) private vestingSchedules;
     string[] public vestingNames;
 
-    event UpdateVestingScheduleOwnerEvent(string vestingName, address oldOwner, address newOwner);
-    event SetVestingScheduleEvent(string vestingName, VestingSchedule vestingSchedule);
-    event ClaimVestedTokensEvent(string vestingName, address recipient, uint256 claimableAmount);
+    event UpdateVestingScheduleOwnerEvent(string indexed vestingName, address indexed oldOwner, address indexed newOwner);
+    event SetVestingScheduleEvent(string indexed vestingName, VestingSchedule vestingSchedule);
+    event ClaimVestedTokensEvent(string indexed vestingName, address indexed recipient, uint256 claimableAmount);
 
     constructor(address initialOwner)
     ERC20("VTrading Token", "VT")
