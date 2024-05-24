@@ -52,7 +52,11 @@ contract VtradingToken is ERC20, ERC20Burnable, Ownable, ERC20Permit {
         require(vestingSchedule.recipient == msg.sender, "Only the recipient can claim the tokens");
         require(vestingSchedule.totalAllocated > 0, "Total allocated tokens must be greater than 0");
         require(vestingSchedule.released < vestingSchedule.totalAllocated, "All tokens have been released");
-        require(vestingSchedule.lastClaimedMonth <= vestingSchedule.totalReleaseMonths, "All tokens have been claimed");
+        if (vestingSchedule.releaseInfos.length > 0) {
+            require(vestingSchedule.lastClaimedMonth < vestingSchedule.totalReleaseMonths, "All tokens have been claimed");
+        } else {
+            require(vestingSchedule.lastClaimedMonth == vestingSchedule.totalReleaseMonths, "Vesting schedule configuration error");
+        }
 
         uint256 claimableAmount = 0;
         if (!vestingSchedule.startReleaseClaimed) {
