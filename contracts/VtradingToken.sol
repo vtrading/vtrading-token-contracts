@@ -114,8 +114,9 @@ contract VtradingToken is ERC20, ERC20Burnable, Ownable, ERC20Permit {
         require(totalReleaseAmount == vestingSchedule.totalAllocated, "Total release amount must match total allocated");
 
         // Check totalTokens is greater than totalAllocated
+        uint256 vestingNameCount = vestingNames.length;
         uint256 allocatedTokens = vestingSchedule.totalAllocated;
-        for (uint256 i = 0; i < vestingNames.length; i++) {
+        for (uint256 i = 0; i < vestingNameCount; i++) {
             allocatedTokens += vestingSchedules[vestingNames[i]].totalAllocated;
         }
         require(totalTokens >= allocatedTokens, "Total tokens must be greater than total allocated tokens");
