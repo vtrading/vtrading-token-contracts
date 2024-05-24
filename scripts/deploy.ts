@@ -19,6 +19,7 @@ async function main() {
     const vtradingTokenContract = await ethers.getContractAt("VtradingToken", vtradingTokenAddress);
     console.log("vtradingToken deployed to:", vtradingTokenAddress);
 
+
     await setVestingSchedule(vtradingTokenContract, "ecosystem", ecosystem);
     await setVestingSchedule(vtradingTokenContract, "team", team);
     await setVestingSchedule(vtradingTokenContract, "reserve", reserve);
@@ -28,6 +29,11 @@ async function main() {
 }
 
 async function setVestingSchedule(vtradingTokenContract: VtradingToken, vestingName: string, vestingSchedule: VtradingToken.VestingScheduleStruct) {
+    const queryVestingSchedule = await vtradingTokenContract.queryVestingSchedule(vestingName);
+    if (queryVestingSchedule.totalAllocated.toString() !== "0") {
+        console.log("vestingSchedule existed:", vestingName);
+        return;
+    }
     const tx = await vtradingTokenContract.setVestingSchedule(vestingName, vestingSchedule);
     await tx.wait();
     console.log("setVestingSchedule tx:", tx.hash);
@@ -1066,16 +1072,22 @@ const marketing = {
     "totalAllocated": "200000000000000000000000000",
     "totalReleaseMonths": "84"
 };
-const reserve = {
+const reserve =  {
     "lastClaimedMonth": "0",
     "lastClaimedTime": "0",
     "recipient": "0xdCCd079d9e6bd9157c6E1c45e681566e30ee8A0F",
-    "releaseInfos": [],
+    "releaseInfos": [{
+        "claimed": false,
+        "claimedTime": "0",
+        "month": "0",
+        "releaseAmount": "0",
+        "releaseTime": "1719532800"
+    }],
     "released": "0",
     "startRelease": "50000000000000000000000000",
     "startReleaseClaimed": false,
     "totalAllocated": "50000000000000000000000000",
-    "totalReleaseMonths": "0"
+    "totalReleaseMonths": "1"
 };
 
 const team = {
