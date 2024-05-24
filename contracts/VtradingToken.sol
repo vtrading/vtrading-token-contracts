@@ -52,7 +52,7 @@ contract VtradingToken is ERC20, ERC20Burnable, Ownable, ERC20Permit {
         require(vestingSchedule.recipient == msg.sender, "Only the recipient can claim the tokens");
         require(vestingSchedule.totalAllocated > 0, "Total allocated tokens must be greater than 0");
         require(vestingSchedule.released < vestingSchedule.totalAllocated, "All tokens have been released");
-        require(vestingSchedule.lastClaimedMonth < vestingSchedule.totalReleaseMonths, "All tokens have been claimed");
+        require(vestingSchedule.lastClaimedMonth <= vestingSchedule.totalReleaseMonths, "All tokens have been claimed");
 
         uint256 claimableAmount = 0;
         if (!vestingSchedule.startReleaseClaimed) {
@@ -137,7 +137,8 @@ contract VtradingToken is ERC20, ERC20Burnable, Ownable, ERC20Permit {
         for (uint256 i = 0; i < vestingSchedule.releaseInfos.length; i++) {
             newSchedule.releaseInfos.push(ReleaseInfo({
                 releaseAmount: vestingSchedule.releaseInfos[i].releaseAmount,
-                month: vestingSchedule.releaseInfos[i].month,
+                //month: vestingSchedule.releaseInfos[i].month,
+                month: i,
                 releaseTime: vestingSchedule.releaseInfos[i].releaseTime,
                 claimed: false, // Initially, nothing has been claimed
                 claimedTime: 0
