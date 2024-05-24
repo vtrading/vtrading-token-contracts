@@ -71,22 +71,24 @@ contract VtradingToken is ERC20, ERC20Burnable, Ownable, ERC20Permit {
 
         for (uint256 i = lastClaimedMonth; i < totalMonths; i++) {
             ReleaseInfo memory releaseInfo = vestingSchedule.releaseInfos[i];
-            require(!releaseInfo.claimed, "Release info has already been claimed");
-            if (blockTimestamp >= releaseInfo.releaseTime) {
-                claimableAmount += releaseInfo.releaseAmount;
+            // require(!releaseInfo.claimed, "Release info has already been claimed");
+            if (!releaseInfo.claimed) {
+                if (blockTimestamp >= releaseInfo.releaseTime) {
+                    claimableAmount += releaseInfo.releaseAmount;
 
-                vestingSchedule.releaseInfos[i].claimed = true;
-                vestingSchedule.releaseInfos[i].claimedTime = blockTimestamp;
+                    vestingSchedule.releaseInfos[i].claimed = true;
+                    vestingSchedule.releaseInfos[i].claimedTime = blockTimestamp;
 
-                vestingSchedule.lastClaimedMonth = releaseInfo.month;
-                vestingSchedule.lastClaimedTime = blockTimestamp;
-                vestingSchedule.released += releaseInfo.releaseAmount;
-                totalReleased += releaseInfo.releaseAmount;
-                if (totalReleased >= totalAllocated) {
+                    vestingSchedule.lastClaimedMonth = releaseInfo.month;
+                    vestingSchedule.lastClaimedTime = blockTimestamp;
+                    vestingSchedule.released += releaseInfo.releaseAmount;
+                    totalReleased += releaseInfo.releaseAmount;
+                    if (totalReleased >= totalAllocated) {
+                        break;
+                    }
+                } else {
                     break;
                 }
-            } else {
-                break;
             }
         }
         if (claimableAmount > 0) {
